@@ -158,11 +158,19 @@ def registrar_turno():
     finally:
         db.close()
 
-    return render_template('descargando.html', curp=curp, turno=turno)
+    return render_template('descargando.html', curp=curp)
+
 
 @app.route('/modificar-turno', methods=['GET', 'POST'])
 def modificar_turno():
     datos = None
+    municipios = []
+    niveles = []
+    asuntos = []
+
+    exito = request.args.get('exito') 
+    curp = request.args.get('curp')    
+    turno = request.args.get('turno')  
 
     if request.method == 'POST':
         curp = request.form['curp']
@@ -172,15 +180,57 @@ def modificar_turno():
         sql = "SELECT * FROM solicitud_turno WHERE curp = %s AND turno = %s"
         db.cursor.execute(sql, (curp, turno))
         datos = db.cursor.fetchone()
+
+        # Consultar catálogos
+        
+        db.cursor.execute("SELECT cve_mun, nombre_mun FROM municipios")
+        municipios = db.cursor.fetchall()
+
+
+        db.cursor.execute("SELECT cve_nivel, nivel FROM niveles")
+        niveles = db.cursor.fetchall()
+
+        db.cursor.execute("SELECT id_asunto, asunto FROM asuntos")
+        asuntos = db.cursor.fetchall()
+
         db.close()
 
         if not datos:
             flash("No se encontró un registro con ese CURP y turno.")
             return redirect(url_for('modificar_turno'))
+        
+        if not exito:
+            exito = None
 
-    return render_template('modificar_turno.html', datos=datos)
+    return render_template('modificar_turno.html', datos=datos, municipios=municipios, niveles=niveles, asuntos=asuntos, exito=exito, curp=curp)
 
 
+@app.route('/guardar-cambios', methods=['POST'])
+def guardar_cambios():
+    curp = request.form['curp']
+    turno = request.form['turno']
+    nombres = request.form['nombres']
+    paterno = request.form['paterno']
+    materno = request.form['materno']
+    telefono = request.form['telefono']
+    correo = request.form['correo']
+    municipio = request.form['municipio']
+    nivel = request.form['nivel']
+    asunto = request.form['asunto']
+
+    db = Database()
+    sql = """
+        UPDATE solicitud_turno
+        SET nombre = %s, paterno = %s, materno = %s, tel = %s, correo = %s,
+            cve_mun = %s, cve_nivel = %s, id_asunto = %s
+        WHERE curp = %s AND turno = %s
+    """
+    db.cursor.execute(sql, (nombres, paterno, materno, telefono, correo, municipio, nivel, asunto, curp, turno))
+    db.conn.commit()  # <<< corregido aquí
+    db.close()
+
+    flash('¡Datos actualizados correctamente!')
+    return redirect(url_for('modificar_turno', exito=1, curp=curp, turno=turno))
 
 @app.route('/descargar-comprobante/<curp>')
 def descargar_comprobante(curp):

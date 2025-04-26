@@ -4,66 +4,70 @@
     <meta charset="UTF-8">
     <title>Registrar Solicitud (Administrador)</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/registro_admin.css') }}">
-</head>
+
+
 <body>
     <div class="container">
         <h2>📝 Registrar nueva solicitud</h2>
 
-        <form method="POST">
+        <form name="registro" method="post" action="{{ url_for('admin_crear') }}" onsubmit="return ValidaCrear();">
             <label>CURP:</label>
-            <input type="text" name="curp" required>
-
+            <input type="text" name="curp" id="curp">
+        
             <label>Nombre:</label>
-            <input type="text" name="nombre" required>
-
+            <input type="text" name="nombre" id="nombre">
+        
             <label>Apellido paterno:</label>
-            <input type="text" name="paterno" required>
-
+            <input type="text" name="paterno" id="paterno">
+        
             <label>Apellido materno:</label>
-            <input type="text" name="materno" required>
-
+            <input type="text" name="materno" id="materno">
+        
             <label>Teléfono:</label>
-            <input type="text" name="tel">
-
+            <input type="text" name="tel" id="telefono">
+        
             <label>Celular:</label>
-            <input type="text" name="celular">
-
+            <input type="text" name="celular" id="celular">
+        
             <label>Correo:</label>
-            <input type="email" name="correo">
-
+            <input type="email" name="correo" id="correo">
+        
             <label>Asunto:</label>
-            <select name="id_asunto">
+            <select name="id_asunto" id="id_asunto">
                 {% for a in asuntos %}
                 <option value="{{ a[0] }}">{{ a[1] }}</option>
                 {% endfor %}
             </select>
-
+        
             <label>Nivel:</label>
-            <select name="cve_nivel">
+            <select name="cve_nivel" id="nivel">
                 {% for n in niveles %}
                 <option value="{{ n[0] }}">{{ n[1] }}</option>
                 {% endfor %}
             </select>
-
+        
             <label>Municipio:</label>
-            <select name="cve_mun">
+            <select name="cve_mun" id="municipio">
                 {% for m in municipios %}
                 <option value="{{ m[0] }}">{{ m[1] }}</option>
                 {% endfor %}
             </select>
-
+        
             <label>Estatus:</label>
-            <select name="id_estatus">
+            <select name="id_estatus" id="id_estatus">
                 <option value="1">Pendiente</option>
                 <option value="2">Resuelto</option>
             </select>
-
+        
             <div class="buttons">
                 <button type="submit" class="btn-registrar">📝 Registrar solicitud</button>
                 <button type="button" class="btn-panel" onclick="window.location.href='/admin-panel'">🏠 Volver al Panel</button>
             </div>
-        </form>
+        </form>        
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ url_for('static', filename='js/ValidaCrear.js') }}"></script>
+
 </body>
 </html>
 

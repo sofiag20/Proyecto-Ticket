@@ -12,24 +12,64 @@
     {% if datos %}
         <!-- Formulario para editar -->
         <form method="POST" action="{{ url_for('guardar_cambios') }}">
-            <input type="hidden" name="curp" value="{{ datos[0] }}">
-            <input type="hidden" name="turno" value="{{ datos[12] }}">
-
+            <input type="hidden" name="curp" value="{{ datos[1] }}">
+            <input type="hidden" name="turno" value="{{ datos[13] }}">
+        
             <div class="mb-3">
-                <label>Nombre:</label>
-                <input type="text" name="nombre" class="form-control" value="{{ datos[4] }}">
+                <label>Nombre(s):</label>
+                <input type="text" name="nombres" class="form-control" value="{{ datos[5] }}">
             </div>
+        
+            <div class="mb-3">
+                <label>Apellido Paterno:</label>
+                <input type="text" name="paterno" class="form-control" value="{{ datos[9] }}">
+            </div>
+        
+            <div class="mb-3">
+                <label>Apellido Materno:</label>
+                <input type="text" name="materno" class="form-control" value="{{ datos[10] }}">
+            </div>
+        
             <div class="mb-3">
                 <label>Teléfono:</label>
-                <input type="text" name="telefono" class="form-control" value="{{ datos[5] }}">
+                <input type="text" name="telefono" class="form-control" value="{{ datos[6] }}">
             </div>
+        
             <div class="mb-3">
                 <label>Correo:</label>
-                <input type="email" name="correo" class="form-control" value="{{ datos[6] }}">
+                <input type="email" name="correo" class="form-control" value="{{ datos[7] }}">
             </div>
-
+            <div class="mb-3">
+                <label>Municipio:</label>
+                <select name="municipio" class="form-select" required>
+                    {% for municipio in municipios %}
+                        <option value="{{ municipio[0] }}" {% if municipio[0] == datos[4] %}selected{% endif %}>{{ municipio[1] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="mb-3">
+                <label>Nivel:</label>
+                <select name="nivel" class="form-select" required>
+                    {% for nivel in niveles %}
+                        <option value="{{ nivel[0] }}" {% if nivel[0] == datos[3] %}selected{% endif %}>{{ nivel[1] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="mb-3">
+                <label>Asunto:</label>
+                <select name="asunto" class="form-select" required>
+                    {% for asunto in asuntos %}
+                        <option value="{{ asunto[0] }}" {% if asunto[0] == datos[2] %}selected{% endif %}>{{ asunto[1] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+        
             <button type="submit" class="btn btn-success">Guardar cambios y descargar comprobante</button>
         </form>
+        
 
     {% else %}
         <!-- Formulario para buscar -->
@@ -45,6 +85,38 @@
             <button type="submit" class="btn btn-primary">Buscar</button>
         </form>
     {% endif %}
+
+    {% if exito %}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Registro',
+            text: '¡Datos actualizados correctamente!',
+            confirmButtonText: 'Descargar comprobante',
+            timer: 3000,
+            timerProgressBar: true
+        }).then((result) => {
+            if (result.isConfirmed || result.dismiss === Swal.DismissReason.timer) {
+                // Primero descarga el comprobante
+                window.location.href = "{{ url_for('descargar_comprobante', curp=curp) }}";
+    
+                // 🧠 Después de descargar, podrías redirigir automáticamente:
+                setTimeout(function() {
+                    window.location.href = "{{ url_for('index') }}";  // <<< Aquí rediriges al inicio limpio
+                }, 4000); // ⏳ Esperas 4 segundos para dar tiempo a la descarga
+            }
+        });
+    
+        // Limpia la URL para que no quede ?exito=1
+        if (window.history.replaceState) {
+            const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+            window.history.replaceState({path: cleanUrl}, '', cleanUrl);
+        }
+    </script>
+    {% endif %}
+    
+
 
 </body>
 </html>
