@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Solicitud (Administrador)</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/registro_admin.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>📝 Registrar nueva solicitud</h2>
+
+        <form method="POST">
+            <label>CURP:</label>
+            <input type="text" name="curp" required>
+
+            <label>Nombre:</label>
+            <input type="text" name="nombre" required>
+
+            <label>Apellido paterno:</label>
+            <input type="text" name="paterno" required>
+
+            <label>Apellido materno:</label>
+            <input type="text" name="materno" required>
+
+            <label>Teléfono:</label>
+            <input type="text" name="tel">
+
+            <label>Celular:</label>
+            <input type="text" name="celular">
+
+            <label>Correo:</label>
+            <input type="email" name="correo">
+
+            <label>Asunto:</label>
+            <select name="id_asunto">
+                {% for a in asuntos %}
+                <option value="{{ a[0] }}">{{ a[1] }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Nivel:</label>
+            <select name="cve_nivel">
+                {% for n in niveles %}
+                <option value="{{ n[0] }}">{{ n[1] }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Municipio:</label>
+            <select name="cve_mun">
+                {% for m in municipios %}
+                <option value="{{ m[0] }}">{{ m[1] }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Estatus:</label>
+            <select name="id_estatus">
+                <option value="1">Pendiente</option>
+                <option value="2">Resuelto</option>
+            </select>
+
+            <div class="buttons">
+                <button type="submit" class="btn-registrar">📝 Registrar solicitud</button>
+                <button type="button" class="btn-panel" onclick="window.location.href='/admin-panel'">🏠 Volver al Panel</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+

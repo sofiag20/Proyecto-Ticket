@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Catálogo de Municipios</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/municipios.css') }}">
+</head>
+<body>
+    <h1>📍 Catálogo de Municipios</h1>
+
+    <form action="/municipios/agregar" method="POST">
+        <input type="text" name="nombre" placeholder="Nuevo municipio" required>
+        <button type="submit">Agregar</button>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Municipio</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for m in municipios %}
+            <tr>
+                <td>{{ m[0] }}</td>
+                <td>
+                    <form action="/municipios/editar/{{ m[0] }}" method="POST">
+                        <input type="text" name="nombre" value="{{ m[1] }}">
+                        <button type="submit">Guardar</button>
+                    </form>
+                </td>
+                <td>
+                    <form action="/municipios/eliminar/{{ m[0] }}" method="POST" onsubmit="return confirm('¿Eliminar este municipio?')">
+                        <button type="submit">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="actions">
+        <button onclick="window.location.href='/admin-panel'">🏠 Volver al Panel</button>
+    </div>
+</body>
+</html>

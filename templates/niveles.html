@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Catálogo de Niveles</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/niveles.css') }}">
+</head>
+<body>
+    <h1>🏫 Catálogo de Niveles</h1>
+
+    <form action="/niveles/agregar" method="POST">
+        <input type="text" name="nivel" placeholder="Nuevo nivel" required>
+        <button type="submit">Agregar</button>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nivel</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for n in niveles %}
+            <tr>
+                <td>{{ n[0] }}</td>
+                <td>
+                    <form action="/niveles/editar/{{ n[0] }}" method="POST">
+                        <input type="text" name="nivel" value="{{ n[1] }}">
+                        <button type="submit">Guardar</button>
+                    </form>
+                </td>
+                <td>
+                    <form action="/niveles/eliminar/{{ n[0] }}" method="POST" onsubmit="return confirm('¿Eliminar este nivel?')">
+                        <button type="submit">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="actions">
+        <button onclick="window.location.href='/admin-panel'">🏠 Volver al Panel</button>
+    </div>
+</body>
+</html>

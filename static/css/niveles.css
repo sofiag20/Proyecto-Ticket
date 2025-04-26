@@ -1,0 +1,131 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    padding: 20px;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+}
+
+form {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+form input[type="text"] {
+    padding: 10px;
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+form button {
+    padding: 10px 20px;
+    background-color: #17a2b8;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #117a8b;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    margin-top: 20px;
+}
+
+table th, table td {
+    padding: 12px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+table form {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+}
+
+table input[type="text"] {
+    width: 150px;
+    padding: 6px;
+}
+
+.actions {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.actions button {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.actions button:hover {
+    background-color: #218838;
+}
+
+/* ===== MEDIA QUERIES ===== */
+
+/* PC */
+@media (min-width: 1200px) {
+    .formulario {
+        max-width: 500px;
+        padding: 3rem;
+    }
+    h1 {
+        font-size: 2rem;
+    }
+}
+
+/* LAPTOP */
+@media (max-width: 1024px) {
+    .formulario {
+        max-width: 350px;
+        padding: 2.5rem;
+    }
+    h1 {
+        font-size: 1.8rem;
+    }
+}
+
+/* TABLET */
+@media (max-width: 768px) {
+    .formulario {
+        max-width: 300px;
+        padding: 2rem;
+    }
+    h1 {
+        font-size: 1.5rem;
+    }
+}
+
+/* MÓVIL */
+@media (max-width: 480px) {
+    body {
+        background-color: #e0f7fa;
+    }
+    .formulario {
+        max-width: 90%;
+        padding: 1.5rem;
+    }
+    h1 {
+        font-size: 1.2rem;
+    }
+}

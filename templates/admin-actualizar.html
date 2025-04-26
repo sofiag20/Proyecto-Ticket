@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Actualizar Solicitud</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/actualizar.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <h1>Actualizar Solicitud</h1>
+
+    <form method="POST">
+        <label>CURP:</label>
+        <input type="text" name="curp" value="{{ solicitud[0] }}" readonly>
+
+        <label>Nombre:</label>
+        <input type="text" name="nombre" value="{{ solicitud[1] }}">
+
+        <label>Teléfono:</label>
+        <input type="text" name="tel" value="{{ solicitud[2] }}">
+
+        <label>Correo:</label>
+        <input type="text" name="correo" value="{{ solicitud[3] }}">
+
+        <label>Apellido paterno:</label>
+        <input type="text" name="paterno" value="{{ solicitud[4] }}">
+
+        <label>Apellido materno:</label>
+        <input type="text" name="materno" value="{{ solicitud[5] }}">
+
+        <label>Celular:</label>
+        <input type="text" name="celular" value="{{ solicitud[6] }}">
+
+        <label>Estatus:</label>
+        <select name="id_estatus">
+            <option value="1" {% if solicitud[7] == 1 %}selected{% endif %}>Pendiente</option>
+            <option value="2" {% if solicitud[7] == 2 %}selected{% endif %}>Resuelto</option>
+        </select>
+
+        <button type="submit">Guardar cambios</button>
+    </form>
+
+    <div class="actions">
+        <button onclick="window.location.href='/admin-panel'">🏠 Volver al Panel de Administrador</button>
+    </div>
+    <!-- SweetAlert2 -->
+
+
+    {% with mensajes = get_flashed_messages() %}
+    {% if mensajes %}
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: '{{ mensajes[0] }}',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        </script>
+    {% endif %}
+    {% endwith %}
+
+</body>
+</html>

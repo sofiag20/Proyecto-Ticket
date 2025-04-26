@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrador - CRUD</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/panel.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Administrador</h2>
+
+        <div class="menu">
+
+            <a href="{{ url_for('admin_crear') }}">
+                <button class="crear">➕ Crear</button>
+            </a>            
+            <a href="{{ url_for('admin_consultar') }}">
+                <button class="consultar">🔍Consultar</button>
+            </a>
+            <a href="{{ url_for('admin_consultar') }}">
+                <button class="actualizar">📝Actualizar</button>
+            </a>
+            
+            <button class="eliminar">❌Eliminar</button>
+        </div>
+
+        <div id="seccion-crear" class="seccion">
+            <h4>Formulario para Crear Solicitud</h4>
+
+        </div>
+
+        <div id="seccion-consultar" class="seccion">
+            <h4>Consultar Solicitudes</h4>
+        </div>
+
+        <div id="seccion-actualizar" class="seccion">
+            <h4>Actualizar Solicitud</h4>
+            
+        </div>
+
+        <div id="seccion-eliminar" class="seccion">
+            <h4>Eliminar Solicitud</h4>
+        </div>
+    </div>
+    <h2>Catálogo</h2>
+    <div class="menu2">
+        <a href="/asuntos"><button class="consultar">📝 Catálogo de Asuntos</button></a>
+        <a href="/niveles"><button class="actualizar">🏢 Catálogo de Niveles</button></a>
+        <a href="/municipios"><button class="consultar">🏙️ Catálogo de Municipios</button></a>
+    </div>
+    <div class="menu2">
+        <a href="/logout"><button class="eliminar">🚪 Cerrar Sesión</button></a>    
+    </div>
+
+
+</body>
+</html>

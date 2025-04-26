@@ -1,0 +1,103 @@
+/* Estilo general del body con centrado */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: montserrat, sans-serif;
+    background: linear-gradient(150deg, #6C3483, #58D68D);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Contenedor centrado */
+.formulario {
+    width: 400px;
+    background: white;
+    border-radius: 10px;
+    padding: 40px 30px;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Título centrado */
+.formulario h1 {
+    margin-bottom: 30px;
+    border-bottom: 1px solid silver;
+    padding-bottom: 10px;
+    font-size: 2rem;
+    color: #6C3483;
+    text-align: center;
+}
+
+/* Contenedor de botones */
+.button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Estilo de botones */
+.button-container button {
+    padding: 12px;
+    font-size: 18px;
+    background: #6C3483;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.button-container button:hover {
+    background-color: #5a2d6c;
+}
+
+/* ===== MEDIA QUERIES ===== */
+
+/* PC */
+@media (min-width: 1200px) {
+    .formulario {
+        max-width: 500px;
+        padding: 3rem;
+    }
+    h1 {
+        font-size: 2rem;
+    }
+}
+
+/* LAPTOP */
+@media (max-width: 1024px) {
+    .formulario {
+        max-width: 350px;
+        padding: 2.5rem;
+    }
+    h1 {
+        font-size: 1.8rem;
+    }
+}
+
+/* TABLET */
+@media (max-width: 768px) {
+    .formulario {
+        max-width: 300px;
+        padding: 2rem;
+    }
+    h1 {
+        font-size: 1.5rem;
+    }
+}
+
+/* MÓVIL */
+@media (max-width: 480px) {
+    body {
+        background-color: #e0f7fa;
+    }
+    .formulario {
+        max-width: 90%;
+        padding: 1.5rem;
+    }
+    h1 {
+        font-size: 1.2rem;
+    }
+}

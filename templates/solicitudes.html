@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Solicitudes de Turno</title>
+</head>
+<body>
+    <h1>Solicitudes de Turno</h1>
+
+    <!-- Formulario de búsqueda -->
+    <form method="POST" action="{{ url_for('consultar_solicitudes') }}">
+        <input type="text" name="curp" placeholder="Buscar por CURP">
+        <input type="text" name="nombre" placeholder="Buscar por Nombre">
+        <button type="submit">Buscar</button>
+    </form>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+            {% for msg in messages %}
+                <li style="color:green">{{ msg }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Tabla de resultados -->
+    <table border="1" cellpadding="5" cellspacing="0">
+        <tr>
+            <th>CURP</th>
+            <th>Nombre Completo</th>
+            <th>Turno</th>
+            <th>Municipio</th>
+            <th>Fecha</th>
+            <th>Estatus</th>
+            <th>Acciones</th>
+        </tr>
+
+        {% for s in resultados %}
+        <tr>
+            <td>{{ s.curp }}</td>
+            <td>{{ s.nombre }} {{ s.paterno }} {{ s.materno }}</td>
+            <td>{{ s.turno }}</td>
+            <td>{{ s.cve_mun }}</td>
+            <td>{{ s.fecha_creacion.strftime('%Y-%m-%d') }}</td>
+            <td>{{ 'Resuelto' if s.id_estatus == 2 else 'Pendiente' }}</td>
+            <td>
+                <a href="{{ url_for('editar_solicitud', curp=s.curp) }}">Editar</a> |
+                <a href="{{ url_for('eliminar_solicitud', curp=s.curp) }}" onclick="return confirm('¿Eliminar esta solicitud?')">Eliminar</a> |
+                <a href="{{ url_for('cambiar_estatus', curp=s.curp) }}">Cambiar Estatus</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

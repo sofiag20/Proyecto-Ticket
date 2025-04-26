@@ -1,0 +1,128 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    padding: 40px;
+}
+
+.container {
+    max-width: 600px;
+    background-color: white;
+    padding: 30px 40px;
+    margin: auto;
+    border-radius: 10px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
+}
+
+h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+form label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+    color: #333;
+}
+
+form input[type="text"],
+form input[type="email"],
+form select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+form select {
+    background-color: #fff;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.btn-registrar {
+    background-color: #28a745;
+    color: white;
+    padding: 12px 25px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.btn-registrar:hover {
+    background-color: #218838;
+}
+
+.btn-panel {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 25px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.btn-panel:hover {
+    background-color: #0056b3;
+}
+
+/* ===== MEDIA QUERIES ===== */
+
+/* PC */
+@media (min-width: 1200px) {
+    .formulario {
+        max-width: 500px;
+        padding: 3rem;
+    }
+    h1 {
+        font-size: 2rem;
+    }
+}
+
+/* LAPTOP */
+@media (max-width: 1024px) {
+    .formulario {
+        max-width: 350px;
+        padding: 2.5rem;
+    }
+    h1 {
+        font-size: 1.8rem;
+    }
+}
+
+/* TABLET */
+@media (max-width: 768px) {
+    .formulario {
+        max-width: 300px;
+        padding: 2rem;
+    }
+    h1 {
+        font-size: 1.5rem;
+    }
+}
+
+/* MÓVIL */
+@media (max-width: 480px) {
+    body {
+        background-color: #e0f7fa;
+    }
+    .formulario {
+        max-width: 90%;
+        padding: 1.5rem;
+    }
+    h1 {
+        font-size: 1.2rem;
+    }
+}

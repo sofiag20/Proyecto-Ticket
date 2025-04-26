@@ -1,0 +1,137 @@
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 90%;
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.menu {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.menu button {
+    flex: 1 1 22%;
+    margin: 10px;
+    padding: 15px;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.menu button:hover {
+    background-color: #ddd;
+}
+
+.crear { background-color: #4CAF50; color: white; }
+.consultar { background-color: #2196F3; color: white; }
+.actualizar { background-color: #FF9800; color: white; }
+.eliminar { background-color: #f44336; color: white; }
+
+.menu2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap; 
+    margin-top: 30px;
+}
+
+
+.menu2 button {
+    flex: 1 1 22%;
+    margin: 10px;
+    padding: 15px;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.menu2 button:hover {
+    background-color: #ddd;
+}
+
+.crear { background-color: #4CAF50; color: white; }
+.consultar { background-color: #2196F3; color: white; }
+.actualizar { background-color: #FF9800; color: white; }
+.eliminar { background-color: #f44336; color: white; }
+
+
+.seccion {
+    display: none;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.visible {
+    display: block;
+}
+
+/* ===== MEDIA QUERIES ===== */
+
+/* PC */
+@media (min-width: 1200px) {
+    .formulario {
+        max-width: 500px;
+        padding: 3rem;
+    }
+    h1 {
+        font-size: 2rem;
+    }
+}
+
+/* LAPTOP */
+@media (max-width: 1024px) {
+    .formulario {
+        max-width: 350px;
+        padding: 2.5rem;
+    }
+    h1 {
+        font-size: 1.8rem;
+    }
+}
+
+/* TABLET */
+@media (max-width: 768px) {
+    .formulario {
+        max-width: 300px;
+        padding: 2rem;
+    }
+    h1 {
+        font-size: 1.5rem;
+    }
+}
+
+/* MÓVIL */
+@media (max-width: 480px) {
+    body {
+        background-color: #e0f7fa;
+    }
+    .formulario {
+        max-width: 90%;
+        padding: 1.5rem;
+    }
+    h1 {
+        font-size: 1.2rem;
+    }
+}

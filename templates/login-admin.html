@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de sesión</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/login.css') }}">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+</head>
+<body>
+    <div class="formulario">
+        <h1>Inicio de sesión</h1>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul>
+                {% for message in messages %}
+                    <li style="color: red;">{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        <form action="{{ url_for('login_admin') }}" method="POST">
+            <div class="username">
+                <input type="text" id="username" name="username">
+                <label>Usuario</label>
+            </div>
+            <div class="username">
+                <input type="password" id="password" name="password">
+                <label>Contraseña</label>
+            </div>
+            <div class="g-recaptcha" data-sitekey="6LcRFR4rAAAAAD3KJoefc3FrCq6MOxCbdR5hBYwb
+            "></div>
+            <div class="submit">
+                <input type="submit" value="Iniciar sesión">
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

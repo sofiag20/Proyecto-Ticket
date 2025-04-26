@@ -1,0 +1,130 @@
+/* Estilo general */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6f9;
+    padding: 40px;
+}
+
+/* Título principal */
+h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+/* Estilo del contenedor general de la tabla */
+#tablaSolicitudes_wrapper {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.08);
+    overflow-x: auto; /* permite scroll si se desborda */
+}
+
+/* Asegura que la tabla se alinee bien */
+table.dataTable {
+    width: 100% !important;
+    table-layout: auto;
+}
+
+/* Encabezado de la tabla */
+table.dataTable thead {
+    background-color: #007bff;
+    color: white;
+}
+
+table.dataTable thead th {
+    text-align: center;
+}
+
+/* Celdas del cuerpo */
+table.dataTable tbody td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Íconos de acción */
+.acciones a {
+    margin: 0 8px;
+    font-size: 20px;
+    text-decoration: none;
+    transition: transform 0.2s;
+    color: #333;
+}
+
+.acciones a:hover {
+    transform: scale(1.2);
+}
+
+/* Botón volver */
+.btn-volver {
+    display: block;
+    margin: 30px auto 0;
+    padding: 12px 25px;
+    background-color: #28a745;
+    color: white;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-volver:hover {
+    background-color: #218838;
+}
+
+/* Scroll horizontal para tablas anchas */
+.dataTables_wrapper {
+    overflow-x: auto;
+}
+
+
+/* ===== MEDIA QUERIES ===== */
+
+/* PC */
+@media (min-width: 1200px) {
+    .formulario {
+        max-width: 500px;
+        padding: 3rem;
+    }
+    h1 {
+        font-size: 2rem;
+    }
+}
+
+/* LAPTOP */
+@media (max-width: 1024px) {
+    .formulario {
+        max-width: 350px;
+        padding: 2.5rem;
+    }
+    h1 {
+        font-size: 1.8rem;
+    }
+}
+
+/* TABLET */
+@media (max-width: 768px) {
+    .formulario {
+        max-width: 300px;
+        padding: 2rem;
+    }
+    h1 {
+        font-size: 1.5rem;
+    }
+}
+
+/* MÓVIL */
+@media (max-width: 480px) {
+    body {
+        background-color: #e0f7fa;
+    }
+    .formulario {
+        max-width: 90%;
+        padding: 1.5rem;
+    }
+    h1 {
+        font-size: 1.2rem;
+    }
+}

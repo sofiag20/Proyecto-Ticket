@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Consultar Solicitudes</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/consultar_admin.css') }}">
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+
+    <h2>📋 Solicitudes Registradas</h2>
+
+    <table id="tablaSolicitudes" class="display">
+        <thead>
+            <tr>
+                <th>CURP</th>
+                <th>Nombre completo</th>
+                <th>Teléfono</th>
+                <th>Celular</th>
+                <th>Correo</th>
+                <th>Fecha</th>
+                <th>Asunto</th>
+                <th>Municipio</th>
+                <th>Nivel</th>
+                <th>Turno</th>
+                <th>Estatus</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for s in solicitudes %}
+            <tr>
+                <td>{{ s[0] }}</td>
+                <td>{{ s[1] }} {{ s[2] }} {{ s[3] }}</td>
+                <td>{{ s[4] }}</td>
+                <td>{{ s[5] }}</td>
+                <td>{{ s[6] }}</td>
+                <td>{{ s[7] }}</td>
+                <td>{{ s[8] }}</td>
+                <td>{{ s[9] }}</td>
+                <td>{{ s[10] }}</td>
+                <td>{{ s[11] }}</td>
+                <td>{{ 'Pendiente' if s[12] == 1 else 'Resuelto' }}</td>
+                <td class="acciones">
+                    <a href="/admin-actualizar/{{ s[0] }}" title="Editar">✏️</a>
+                    <a href="#" onclick="eliminarSolicitud('{{ s[0] }}')" title="Eliminar">🗑️</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <button class="btn-volver" onclick="window.location.href='/admin-panel'">🏠 Volver al Panel de Administrador</button>
+
+    <script>
+        new DataTable('#tablaSolicitudes', {
+            responsive: true,
+            autoWidth: false,
+            scrollX: true,
+            pageLength: 10
+        });
+        
+
+        function eliminarSolicitud(curp) {
+            Swal.fire({
+                title: '¿Eliminar solicitud?',
+                text: "No podrás revertir esta acción.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#aaa',
+                confirmButtonText: 'Sí, eliminar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/admin-eliminar/' + curp;
+                }
+            });
+        }
+    </script>
+</body>
+</html>

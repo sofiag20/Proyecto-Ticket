@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Solicitudes</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: #f4f4f4;
+            margin: 20px;
+        }
+        h2 {
+            color: #333;
+        }
+        .chart-container {
+            width: 80%;
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        select {
+            padding: 10px;
+            margin: 20px;
+            font-size: 16px;
+        }
+        canvas {
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h2>📊 Estatus de Solicitudes por Municipio</h2>
+
+    <!-- Selector de municipio -->
+    <label for="municipio">Selecciona Municipio:</label>
+    <select id="municipio">
+        <option value="todos">Todos</option>
+        <option value="1">Arteaga</option>
+        <option value="2">Saltillo</option>
+        <option value="3">Piedras Negras</option>
+        <!-- Agrega más municipios según tu base -->
+    </select>
+
+    <div class="chart-container">
+        <canvas id="myChart"></canvas>
+    </div>
+
+    <script>
+        let chart;
+    
+        function cargarGrafica(municipio = 'todos') {
+            fetch(`/api/dashboard?municipio=${municipio}`)
+                .then(response => response.json())
+                .then(data => {
+                    const estatusMap = {
+                        "Pendiente": 0,
+                        "Resuelto": 0
+                    };
+    
+                    // Llenar valores según los datos que llegan
+                    data.forEach(item => {
+                        if (item.estatus in estatusMap) {
+                            estatusMap[item.estatus] = item.total;
+                        }
+                    });
+    
+                    const labels = Object.keys(estatusMap);
+                    const values = Object.values(estatusMap);
+    
+                    const ctx = document.getElementById("myChart").getContext("2d");
+    
+                    if (chart) chart.destroy(); // Si ya hay una gráfica, destruirla
+    
+                    chart = new Chart(ctx, {
+                        type: "bar",
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: "Número de Solicitudes",
+                                data: values,
+                                backgroundColor: [
+                                    "rgba(255, 99, 132, 0.6)",
+                                    "rgba(75, 192, 192, 0.6)"
+                                ],
+                                borderColor: [
+                                    "rgba(255, 99, 132, 1)",
+                                    "rgba(75, 192, 192, 1)"
+                                ],
+                                borderWidth: 2,
+                                borderRadius: 5
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    backgroundColor: "rgba(0, 0, 0, 0.8)"
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                })
+                .catch(error => console.error("Error al cargar datos:", error));
+        }
+    
+        // Cargar gráfica al inicio
+        document.addEventListener("DOMContentLoaded", function () {
+            cargarGrafica();
+            document.getElementById("municipio").addEventListener("change", function () {
+                cargarGrafica(this.value);
+            });
+        });
+    </script>
+    
+</body>
+</html>

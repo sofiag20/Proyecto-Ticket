@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket de Turno</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ url_for('static', filename='js/ValidaTicket.js') }}"></script>
+
+
+    
+</head> 
+<body>
+        <div class="container">
+            <form name="registro" method="post" action="{{ url_for('registrar_turno') }}" onsubmit="return ValidaTicket();">
+                <div class="titulo">
+                    <img src="/static/img/logo.png" alt="Secretaria de Educación" width="100px" height="100px">
+                    <h1>Ticket de Turno</h1>
+                </div>
+                <div>
+                    <label>Nombre completo de quien realizará el trámite:</label>
+                    <input type="text" name="nombre_completo" id="nombre_completo">
+                </div>
+
+                <div class="grupo">
+                    <label for="curp">CURP:</label>
+                    <input type="text" name="curp" id="curp">
+                </div>
+
+                <div>
+                    <label >Nombre:</label>
+                    <input type="text" name="nombres" id="nombres">
+
+                    <label >Paterno:</label>
+                    <input type="text" name="paterno" id="paterno">
+
+                    <label >Materno:</label>
+                    <input type="text" name="materno" id="materno"><br><br>
+                </div>
+
+                <div>
+                    <label>Teléfono:</label>
+                    <input type="text" name="telefono" id="telefono">
+
+                    <label>Celular:</label>
+                    <input type="text" name="celular" id="celular">
+
+                    <label>Correo:</label>
+                    <input type="text" name="correo" id="correo"><br><br>
+                </div>
+
+                <div class="nivel">
+                    <label>¿Nivel al que desea ingresar o que ya cursa el alumno?</label>
+                    <select name="nivel" id="nivel">
+                        <option value="0" {% if nivel == "0" %}selected{% endif %}>Seleccione un nivel</option>
+                        <option value="5" {% if nivel == "1" %}selected{% endif %}>Primaria</option>
+                        <option value="6" {% if nivel == "2" %}selected{% endif %}>Secundaria</option>
+                        <option value="7" {% if nivel == "3" %}selected{% endif %}>Preparatoria</option>
+                        <option value="8" {% if nivel == "4" %}selected{% endif %}>Universidad</option>
+                    </select><br><br>
+                </div>
+
+                <div class="municipio">
+                    <label>Municipio donde desea que estudie el alumno:</label>
+                    <select name="municipio" id="municipio">
+                        <option value="0" {% if municipio == "0" %}selected{% endif %}>Seleccione un municipio</option>
+                        <option value="1" {% if municipio == "1" %}selected{% endif %}>Arteaga</option>
+                        <option value="2" {% if municipio == "2" %}selected{% endif %}>Saltillo</option>
+                        <option value="3" {% if municipio == "3" %}selected{% endif %}>Piedras Negras</option>
+                    </select><br><br>
+                </div>
+
+                <div class="asunto">
+                    <label>Seleccione el asunto que va a tratar:</label>
+                    <select name="id_asunto" id="id_asunto">
+                        <option value="0" {% if asunto == "0" %}selected{% endif %}>Seleccione un asunto</option>
+                        <option value="17" {% if asunto == "1" %}selected{% endif %}>Inscripción</option>
+                        <option value="18" {% if asunto == "2" %}selected{% endif %}>Reinscripción</option>
+                        <option value="19" {% if asunto == "3" %}selected{% endif %}>Cambio de escuela</option>
+                    </select><br><br>
+                </div>
+
+                <div class="boton">
+                    <input class="boton_registro" type="submit" value="🎟️ Generar Turno">
+                </div>
+                <div class="boton mt-3">
+                    <a href="{{ url_for('modificar_turno') }}" class="btn btn-warning">
+                        ✏️ Modificar datos registrados
+                    </a>
+                </div>
+                
+                <div class="acciones">
+                    <button type="button" onclick="window.location.href='/'">🏠 Volver al Inicio</button>
+                </div>               
+            </form>
+        </div>
+        
+        <img id="qrImage" src="" alt="Código QR" style="display:none; width:200px; height:200px; margin-top:10px;">
+        <button type="button"  class="btn-qr" onclick="generarQR()">🔳 Generar QR</button>
+
+        <script>
+            function generarQR() {
+                let curp = document.getElementById("curp").value;
+                if (curp === "") {
+                    Swal.fire({
+                        title: "Error",
+                        text: "Por favor ingresa tu CURP",
+                        icon: "warning"
+                    });
+                    return;
+                }
+            
+                let img = document.getElementById("qrImage");
+                img.src = "/generar_qr?curp=" + encodeURIComponent(curp);
+                img.style.display = "block";
+            }
+        </script>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <script>
+            Swal.fire({
+            title: "Registro",
+            text: "{{ messages[0] }}",
+            icon: "success"
+            });
+        </script>
+        {% endif %}
+    {% endwith %}
+
+</body>
+</html>
