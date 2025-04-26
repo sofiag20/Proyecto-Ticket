@@ -158,7 +158,7 @@ def registrar_turno():
     finally:
         db.close()
 
-    return render_template('descargando.html', curp=curp)
+    return render_template('descargando.html', curp=curp, turno=turno)
 
 
 @app.route('/modificar-turno', methods=['GET', 'POST'])
@@ -234,52 +234,61 @@ def guardar_cambios():
 
 @app.route('/descargar-comprobante/<curp>')
 def descargar_comprobante(curp):
-    from fpdf import FPDF
-    import qrcode
-    from io import BytesIO
-    import os
-
-    # Recupera los datos del usuario desde la base de datos si quieres incluir más info
     db = Database()
-    sql = "SELECT nombre, paterno, materno, turno FROM solicitud_turno WHERE curp = %s"
+
+    sql = "SELECT nombre, paterno, materno, turno, tel, celular, correo, cve_nivel, cve_mun, id_asunto FROM solicitud_turno WHERE curp = %s"
     db.cursor.execute(sql, (curp,))
     resultado = db.cursor.fetchone()
-    db.close()
 
     if not resultado:
+        db.close()
         flash("No se encontró la información del turno.")
         return redirect(url_for('index'))
 
-    nombre, paterno, materno, turno = resultado
+    nombre, paterno, materno, turno, telefono, celular, correo, cve_nivel, cve_mun, id_asunto = resultado
 
-    # Generar QR
-    qr_img = qrcode.make(curp)
-    qr_buffer = BytesIO()
-    qr_img.save(qr_buffer, format='PNG')
-    qr_buffer.seek(0)
+    # Buscamos nombre del municipio
+    sql_mun = "SELECT nombre_mun FROM municipios WHERE cve_mun = %s"
+    db.cursor.execute(sql_mun, (cve_mun,))
+    mun_result = db.cursor.fetchone()
+    nombre_municipio = mun_result[0] if mun_result else "Municipio desconocido"
 
-    pdf = FPDF()
-    pdf.add_page()
-    pdf.set_font("Arial", "B", 16)
-    pdf.cell(0, 10, "Comprobante de Registro de Turno", ln=True, align="C")
-    pdf.set_font("Arial", "", 12)
-    pdf.ln(10)
-    pdf.cell(0, 10, f"CURP: {curp}", ln=True)
-    pdf.cell(0, 10, f"Nombre: {nombre} {paterno} {materno}", ln=True)
-    pdf.cell(0, 10, f"Turno asignado: {turno}", ln=True)
-    pdf.cell(0, 10, "Este comprobante contiene un código QR con su CURP para verificación.", ln=True)
+    # Buscamos nombre del nivel
+    sql_nivel = "SELECT nivel FROM niveles WHERE cve_nivel = %s"
+    db.cursor.execute(sql_nivel, (cve_nivel,))
+    nivel_result = db.cursor.fetchone()
+    nombre_nivel = nivel_result[0] if nivel_result else "Nivel desconocido"
 
-    temp_img_path = "temp_qr.png"
-    with open(temp_img_path, "wb") as f:
-        f.write(qr_buffer.read())
-    pdf.image(temp_img_path, x=150, y=50, w=40, h=40)
-    os.remove(temp_img_path)
+    # Buscamos nombre del asunto
+    sql_asunto = "SELECT asunto FROM asuntos WHERE id_asunto = %s"
+    db.cursor.execute(sql_asunto, (id_asunto,))
+    asunto_result = db.cursor.fetchone()
+    nombre_asunto = asunto_result[0] if asunto_result else "Asunto desconocido"
 
-    pdf_bytes = pdf.output(dest='S').encode('latin1')
-    pdf_output = BytesIO(pdf_bytes)
-    pdf_output.seek(0)
+    db.close()
 
-    return send_file(pdf_output, download_name=f"comprobante_{curp}.pdf", as_attachment=True, mimetype='application/pdf')
+    
+    datos_usuario = {
+        "curp": curp,
+        "nombre": f"{nombre} {paterno} {materno}",
+        "turno": turno,
+        "telefono": telefono,
+        "celular": celular,
+        "correo": correo,
+        "nivel": nombre_nivel,
+        "municipio": nombre_municipio,
+        "asunto": nombre_asunto
+    }
+
+    pdf_buffer = generar_comprobante_pdf(datos_usuario)
+
+    return send_file(
+        pdf_buffer,
+        download_name=f"comprobante_{curp}.pdf",
+        as_attachment=True,
+        mimetype='application/pdf'
+    )
+
 
 
 @app.route("/generar_qr")
@@ -288,7 +297,7 @@ def generar_qr():
     if not curp:
         return "Error: No se recibió la CURP", 400
 
-    # Crear código QR con la CURP
+    
     qr = qrcode.make(curp)
     img_io = io.BytesIO()
     qr.save(img_io, "PNG")
@@ -347,8 +356,6 @@ def admin_actualizar(curp):
         flash("✅ Cambios guardados correctamente")
         return redirect(url_for('admin_actualizar', curp=curp))
 
-
-    # Si es GET, obtener los datos actuales
     db.cursor.execute("""
         SELECT curp, nombre, tel, correo, paterno, materno, celular, id_estatus
         FROM solicitud_turno
@@ -431,6 +438,12 @@ def admin_crear():
     db.close()
 
     return render_template('admin-crear.html', asuntos=asuntos, municipios=municipios, niveles=niveles)
+
+@app.route('/grafica')
+def grafica():
+    if 'admin' not in session:
+        return redirect(url_for('login_admin'))
+    return render_template('grafica2.html')
 
 
 @app.route("/")

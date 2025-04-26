@@ -149,7 +149,7 @@ form input#curp {
 }
 
 .btn-qr {
-    background-color: #6f42c1; /* morado elegante */
+    background-color: #6f42c1; 
     color: white;
     font-size: 1.1rem;
     padding: 12px 25px;
@@ -166,7 +166,7 @@ form input#curp {
 
 .btn-modificar {
     display: inline-block;
-    background-color: #28a745; /* verde bonito */
+    background-color: #28a745; 
     color: white;
     font-size: 18px;
     font-weight: bold;

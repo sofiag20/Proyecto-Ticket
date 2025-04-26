@@ -86,6 +86,37 @@ h2 {
 .visible {
     display: block;
 }
+.buttons {
+    display: flex;
+    justify-content: center; /* Centrar horizontalmente el contenido */
+    margin-top: 20px;
+}
+
+.btn-grafica {
+    background-color: #6c63ff;
+    color: white;
+    padding: 12px 24px;
+    text-decoration: none;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.3s;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
+}
+
+.btn-grafica:hover {
+    background-color: #574b90;
+    transform: scale(1.05); /* Efecto de agrandarse */
+}
+
+.btn-grafica:active {
+    background-color: #453a80;
+    transform: scale(0.97); /* Pequeño efecto al presionar */
+}
+
+
 
 /* ===== MEDIA QUERIES ===== */
 

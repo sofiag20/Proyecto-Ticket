@@ -4,35 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard de Solicitudes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/grafica.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background: #f4f4f4;
-            margin: 20px;
-        }
-        h2 {
-            color: #333;
-        }
-        .chart-container {
-            width: 80%;
-            max-width: 800px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-        }
-        select {
-            padding: 10px;
-            margin: 20px;
-            font-size: 16px;
-        }
-        canvas {
-            max-width: 100%;
-        }
-    </style>
 </head>
 <body>
     <h2>📊 Estatus de Solicitudes por Municipio</h2>
@@ -124,5 +97,8 @@
         });
     </script>
     
+    <div class="buttons">
+        <button type="button" class="btn-panel" onclick="window.location.href='/admin-panel'">🏠 Volver al Panel</button>
+    </div>
 </body>
 </html>

@@ -8,7 +8,7 @@ import io
 def generar_comprobante_pdf(datos_usuario):
     buffer = io.BytesIO()
 
-    # Crear PDF
+    # Crear el PDF
     c = canvas.Canvas(buffer, pagesize=letter)
     width, height = letter
 
@@ -16,28 +16,32 @@ def generar_comprobante_pdf(datos_usuario):
     c.setFont("Helvetica-Bold", 16)
     c.drawString(100, height - 50, "Comprobante de Ticket de Turno")
 
-    # Subtítulo y datos
-    c.setFont("Helvetica", 12)
-    c.drawString(100, height - 90, f"Nombre: {datos_usuario['nombre']}")
-    c.drawString(100, height - 110, f"CURP: {datos_usuario['curp']}")
-    c.drawString(100, height - 130, f"Turno asignado: {datos_usuario['turno']}")
-    c.drawString(100, height - 150, f"Municipio: {datos_usuario['municipio']}")
-    c.drawString(100, height - 170, f"Asunto: {datos_usuario['asunto']}")
+    # Estilo
+    c.setFont("Helvetica-Bold", 14)
 
-    # Generar QR con la CURP
-    qr = qrcode.make(datos_usuario['curp'])
+    # Dibujar los datos
+    c.drawString(1 * inch, height - 1 * inch, f"Nombre completo: {datos_usuario['nombre']}")
+    c.drawString(1 * inch, height - 1.5 * inch, f"CURP: {datos_usuario['curp']}")
+    c.drawString(1 * inch, height - 2 * inch, f"Turno: {datos_usuario['turno']}")
+    c.drawString(1 * inch, height - 2.5 * inch, f"Teléfono: {datos_usuario['telefono']}")
+    c.drawString(1 * inch, height - 3 * inch, f"Celular: {datos_usuario['celular']}")
+    c.drawString(1 * inch, height - 3.5 * inch, f"Correo: {datos_usuario['correo']}")
+    c.drawString(1 * inch, height - 4 * inch, f"Nivel: {datos_usuario['nivel']}")
+    c.drawString(1 * inch, height - 4.5 * inch, f"Municipio: {datos_usuario['municipio']}")
+    c.drawString(1 * inch, height - 5 * inch, f"Asunto: {datos_usuario['asunto']}")
+
+    # 🧠 Crear el Código QR
+    qr_data = datos_usuario['curp']
+    qr = qrcode.make(qr_data)
     qr_io = io.BytesIO()
     qr.save(qr_io, format='PNG')
     qr_io.seek(0)
-
-    # Convertir BytesIO en un objeto compatible con reportlab
     qr_image = ImageReader(qr_io)
 
-    # Insertar QR en el PDF
-    c.drawImage(qr_image, 100, height - 350, width=150, height=150)
+    # Insertar QR
+    c.drawImage(qr_image, 5.5 * inch, height - 3 * inch, width=2 * inch, height=2 * inch)
 
     # Finalizar PDF
-    c.showPage()
     c.save()
     buffer.seek(0)
 
