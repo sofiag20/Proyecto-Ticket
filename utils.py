@@ -1,6 +1,7 @@
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch
+from reportlab.lib.utils import ImageReader
 import qrcode
 import io
 
@@ -29,8 +30,11 @@ def generar_comprobante_pdf(datos_usuario):
     qr.save(qr_io, format='PNG')
     qr_io.seek(0)
 
+    # Convertir BytesIO en un objeto compatible con reportlab
+    qr_image = ImageReader(qr_io)
+
     # Insertar QR en el PDF
-    c.drawInlineImage(qr_io, 100, height - 350, width=150, height=150)
+    c.drawImage(qr_image, 100, height - 350, width=150, height=150)
 
     # Finalizar PDF
     c.showPage()
