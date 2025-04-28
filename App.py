@@ -14,11 +14,6 @@ from models import db
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:12345@localhost/ticket_turno'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-db.init_app(app)
-
 
 app = Flask(__name__)
 app.secret_key = 'clave_secreta'
