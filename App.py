@@ -13,21 +13,6 @@ from models.CRUD import valida_admin
 from models.Database import Database
 from models import db 
 from models.solicitud_turno import SolicitudTurno 
-from models.municipios import Municipio
-from models.nivel import Nivel
-from models.asunto import Asunto
-
-def obtener_id_municipio(nombre):
-    mun = Municipio.query.filter_by(nombre_mun=nombre).first()
-    return mun.cve_mun if mun else 0
-
-def obtener_id_nivel(nombre):
-    nivel = Nivel.query.filter_by(nivel=nombre).first()
-    return nivel.cve_nivel if nivel else 0
-
-def obtener_id_asunto(nombre):
-    asunto = Asunto.query.filter_by(asunto=nombre).first()
-    return asunto.id_asunto if asunto else 0
 
 
 app = Flask(__name__)
@@ -43,7 +28,7 @@ app.secret_key = 'clave_secreta'
 # Ruta de bienvenida
 @app.route('/')
 def bienvenida():
-    return render_template('Bienvenidos.html')  # Página de bienvenida (Bienvenidos.html)
+    return render_template('Bienvenidos.html') 
 
 # Ruta de login para administrador
 @app.route('/login-admin', methods=['GET', 'POST'])
@@ -85,20 +70,16 @@ def login_admin():
 def index():
     db = Database()
     
-    # Traer niveles
     db.cursor.execute("SELECT cve_nivel, nivel FROM niveles ORDER BY nivel")
     niveles = db.cursor.fetchall()
 
-    # Traer municipios
     db.cursor.execute("SELECT cve_mun, nombre_mun FROM municipios ORDER BY nombre_mun")
     municipios = db.cursor.fetchall()
 
-    # Traer asuntos
     db.cursor.execute("SELECT id_asunto, asunto FROM asuntos ORDER BY asunto")
     asuntos = db.cursor.fetchall()
 
     return render_template('index.html', niveles=niveles, municipios=municipios, asuntos=asuntos)
-
 
 
 # Ruta del panel de administración
@@ -117,7 +98,7 @@ def logout():
 
 from flask import request, redirect, url_for, flash
 from datetime import datetime
-from models.Database import Database  # importa tu clase de conexión
+from models.Database import Database  
 
 @app.route('/registrar-turno', methods=['POST'])
 def registrar_turno():
