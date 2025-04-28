@@ -25,4 +25,4 @@ class Database:
         if hasattr(self, 'conn') and self.conn:
             self.conn.close()
         print("Conexión cerrada")
-        Database._instance = None  # Reinicia la instancia singleton
+        Database._instance = None  
