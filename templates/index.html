@@ -51,37 +51,36 @@
                     <input type="text" name="correo" id="correo"><br><br>
                 </div>
 
-                <div class="nivel">
-                    <label>¿Nivel al que desea ingresar o que ya cursa el alumno?</label>
-                    <select name="nivel" id="nivel">
-                        <option value="0" {% if nivel == "0" %}selected{% endif %}>Seleccione un nivel</option>
-                        <option value="5" {% if nivel == "1" %}selected{% endif %}>Primaria</option>
-                        <option value="6" {% if nivel == "2" %}selected{% endif %}>Secundaria</option>
-                        <option value="7" {% if nivel == "3" %}selected{% endif %}>Preparatoria</option>
-                        <option value="8" {% if nivel == "4" %}selected{% endif %}>Universidad</option>
-                    </select><br><br>
+                <div>
+                    <label>Nivel al que desea ingresar o que ya cursa el alumno</label>
+                    <select name="nivel" id="nivel" >
+                        <option value="0">Seleccione un nivel</option>
+                        {% for nivel in niveles %}
+                            <option value="{{ nivel[0] }}">{{ nivel[1] }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
-
-                <div class="municipio">
-                    <label>Municipio donde desea que estudie el alumno:</label>
+                
+                <div>
+                    <label>Municipio donde desea que estudie el alumno</label>
                     <select name="municipio" id="municipio">
-                        <option value="0" {% if municipio == "0" %}selected{% endif %}>Seleccione un municipio</option>
-                        <option value="1" {% if municipio == "1" %}selected{% endif %}>Arteaga</option>
-                        <option value="2" {% if municipio == "2" %}selected{% endif %}>Saltillo</option>
-                        <option value="3" {% if municipio == "3" %}selected{% endif %}>Piedras Negras</option>
-                    </select><br><br>
+                        <option value="0">Seleccione un municipio</option>
+                        {% for municipio in municipios %}
+                            <option value="{{ municipio[0] }}">{{ municipio[1] }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
-
-                <div class="asunto">
-                    <label>Seleccione el asunto que va a tratar:</label>
+                
+                <div>
+                    <label>Seleccione el asunto que va a tratar</label>
                     <select name="id_asunto" id="id_asunto">
-                        <option value="0" {% if asunto == "0" %}selected{% endif %}>Seleccione un asunto</option>
-                        <option value="17" {% if asunto == "1" %}selected{% endif %}>Inscripción</option>
-                        <option value="18" {% if asunto == "2" %}selected{% endif %}>Reinscripción</option>
-                        <option value="19" {% if asunto == "3" %}selected{% endif %}>Cambio de escuela</option>
-                    </select><br><br>
+                        <option value="0">Seleccione un asunto</option>
+                        {% for asunto in asuntos %}
+                            <option value="{{ asunto[0] }}">{{ asunto[1] }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
-
+                
                 <div class="boton">
                     <input class="boton_registro" type="submit" value="🎟️ Generar Turno">
                 </div>

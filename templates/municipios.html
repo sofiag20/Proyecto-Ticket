@@ -8,11 +8,18 @@
 <body>
     <h1>📍 Catálogo de Municipios</h1>
 
-    <form action="/municipios/agregar" method="POST">
-        <input type="text" name="nombre" placeholder="Nuevo municipio" required>
-        <button type="submit">Agregar</button>
+    <form method="POST" action="{{ url_for('agregar_municipio') }}">
+        <label>Clave del Municipio:
+            <input type="number" name="cve_mun" required>
+        </label>
+    
+        <label>Nombre del Municipio:
+            <input type="text" name="nombre" required>
+        </label>
+    
+        <button type="submit" class="btn btn-primary">Agregar Municipio</button>
     </form>
-
+    
     <table>
         <thead>
             <tr>

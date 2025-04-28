@@ -3,7 +3,6 @@ import requests
 from datetime import datetime
 from fpdf import FPDF
 import os
-#import de qr
 import qrcode
 import io
 from io import BytesIO
@@ -13,7 +12,7 @@ from flask_bcrypt import check_password_hash
 from models.CRUD import valida_admin
 from models.Database import Database
 from models import db 
-from models.solicitud_turno import SolicitudTurno  # tu modelo
+from models.solicitud_turno import SolicitudTurno 
 from models.municipios import Municipio
 from models.nivel import Nivel
 from models.asunto import Asunto
@@ -82,26 +81,38 @@ def login_admin():
     return render_template('login-admin.html')
 
 
-# Ruta de la página para usuarios
 @app.route('/index')
 def index():
-    # Aquí podrías tener la página que quieras mostrar para los usuarios
-    return render_template('index.html')  # Muestra la página de usuario
+    db = Database()
+    
+    # Traer niveles
+    db.cursor.execute("SELECT cve_nivel, nivel FROM niveles ORDER BY nivel")
+    niveles = db.cursor.fetchall()
+
+    # Traer municipios
+    db.cursor.execute("SELECT cve_mun, nombre_mun FROM municipios ORDER BY nombre_mun")
+    municipios = db.cursor.fetchall()
+
+    # Traer asuntos
+    db.cursor.execute("SELECT id_asunto, asunto FROM asuntos ORDER BY asunto")
+    asuntos = db.cursor.fetchall()
+
+    return render_template('index.html', niveles=niveles, municipios=municipios, asuntos=asuntos)
+
+
 
 # Ruta del panel de administración
 @app.route('/admin-panel')
 def admin_panel():
-    # Si el admin no está logueado, redirige al login
     if 'admin' not in session:
-        return redirect(url_for('login_admin'))  # Redirige al login si no está autenticado
+        return redirect(url_for('login_admin'))  
+    return render_template('admin-panel.html')  
 
-    return render_template('admin-panel.html')  # Muestra la página de administración
 
-# Ruta para cerrar sesión
 @app.route('/logout')
 def logout():
-    session.pop('admin', None)  # Cierra la sesión del administrador
-    return redirect(url_for('bienvenida'))  # Redirige a la página de bienvenida
+    session.pop('admin', None)  
+    return redirect(url_for('bienvenida')) 
 
 
 from flask import request, redirect, url_for, flash
@@ -126,7 +137,6 @@ def registrar_turno():
         flash(f"Error al obtener datos: {e}")
         return redirect(url_for('index'))
 
-    # Validaciones de selects
     if nivel_id == 0 or municipio_id == 0 or asunto_id == 0:
         flash("Selecciona valores válidos en los combos.")
         return redirect(url_for('index'))
@@ -226,7 +236,7 @@ def guardar_cambios():
         WHERE curp = %s AND turno = %s
     """
     db.cursor.execute(sql, (nombres, paterno, materno, telefono, correo, municipio, nivel, asunto, curp, turno))
-    db.conn.commit()  # <<< corregido aquí
+    db.conn.commit() 
     db.close()
 
     flash('¡Datos actualizados correctamente!')
@@ -247,19 +257,17 @@ def descargar_comprobante(curp):
 
     nombre, paterno, materno, turno, telefono, celular, correo, cve_nivel, cve_mun, id_asunto = resultado
 
-    # Buscamos nombre del municipio
+    
     sql_mun = "SELECT nombre_mun FROM municipios WHERE cve_mun = %s"
     db.cursor.execute(sql_mun, (cve_mun,))
     mun_result = db.cursor.fetchone()
     nombre_municipio = mun_result[0] if mun_result else "Municipio desconocido"
 
-    # Buscamos nombre del nivel
     sql_nivel = "SELECT nivel FROM niveles WHERE cve_nivel = %s"
     db.cursor.execute(sql_nivel, (cve_nivel,))
     nivel_result = db.cursor.fetchone()
     nombre_nivel = nivel_result[0] if nivel_result else "Nivel desconocido"
 
-    # Buscamos nombre del asunto
     sql_asunto = "SELECT asunto FROM asuntos WHERE id_asunto = %s"
     db.cursor.execute(sql_asunto, (id_asunto,))
     asunto_result = db.cursor.fetchone()
@@ -403,9 +411,9 @@ def admin_crear():
         id_asunto = int(request.form['id_asunto'])
         cve_nivel = int(request.form['cve_nivel'])
         cve_mun = int(request.form['cve_mun'])
-        id_estatus = int(request.form['id_estatus'])  # 1 = Pendiente, 2 = Resuelto
+        id_estatus = int(request.form['id_estatus'])  
 
-        # Generar turno por municipio
+
         db.cursor.execute("SELECT MAX(turno) FROM solicitud_turno WHERE cve_mun = %s", (cve_mun,))
         ultimo_turno = db.cursor.fetchone()[0]
         turno = 1 if ultimo_turno is None else ultimo_turno + 1
@@ -428,7 +436,6 @@ def admin_crear():
 
         return redirect(url_for('admin_consultar'))
 
-    # Si es GET, mostrar el formulario
     db.cursor.execute("SELECT * FROM asuntos")
     asuntos = db.cursor.fetchall()
     db.cursor.execute("SELECT * FROM municipios")
@@ -548,14 +555,20 @@ def ver_municipios():
     db.close()
     return render_template('municipios.html', municipios=municipios)
 
-@app.route('/municipios/agregar', methods=['POST'])
+@app.route('/agregar-municipio', methods=['POST'])
 def agregar_municipio():
+    cve_mun = request.form['cve_mun']  
     nombre = request.form['nombre']
+
     db = Database()
-    db.cursor.execute("INSERT INTO municipios (nombre_mun) VALUES (%s)", (nombre,))
-    db.conn.commit()
-    db.close()
-    return redirect(url_for('ver_municipios'))
+    db.cursor.execute(
+        "INSERT INTO municipios (cve_mun, nombre_mun) VALUES (%s, %s)",
+        (cve_mun, nombre)
+    )
+    db.cursor.connection.commit()
+
+    flash('Municipio agregado correctamente')
+    return redirect(url_for('ver_municipios'))  
 
 @app.route('/municipios/editar/<int:cve_mun>', methods=['POST'])
 def editar_municipio(cve_mun):
