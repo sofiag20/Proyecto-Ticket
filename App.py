@@ -2,17 +2,15 @@ from flask import Flask, render_template, request, session, redirect, url_for, f
 import requests
 from datetime import datetime
 from fpdf import FPDF
-import os
 import qrcode
 import io
 from io import BytesIO
 from utils import generar_comprobante_pdf
 from flask import jsonify
-from flask_bcrypt import check_password_hash
 from models.CRUD import valida_admin
 from models.Database import Database
 from models import db 
-from models.solicitud_turno import SolicitudTurno 
+
 
 
 app = Flask(__name__)
@@ -95,10 +93,6 @@ def logout():
     session.pop('admin', None)  
     return redirect(url_for('bienvenida')) 
 
-
-from flask import request, redirect, url_for, flash
-from datetime import datetime
-from models.Database import Database  
 
 @app.route('/registrar-turno', methods=['POST'])
 def registrar_turno():
