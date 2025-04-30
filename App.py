@@ -483,6 +483,21 @@ def api_dashboard():
         print("❌ ERROR EN API DASHBOARD:", e)
         return jsonify({"error": str(e)}), 500
 
+@app.route('/api/municipios')
+def obtener_municipios():
+    db = Database()
+    try:
+        sql = "SELECT cve_mun, nombre_mun FROM municipios ORDER BY nombre_mun ASC"
+        db.cursor.execute(sql)
+        resultados = db.cursor.fetchall()
+        db.close()
+
+        municipios = [{"id": row[0], "nombre": row[1]} for row in resultados]
+        return jsonify(municipios)
+    except Exception as e:
+        print("❌ ERROR AL OBTENER MUNICIPIOS:", e)
+        return jsonify({"error": str(e)}), 500
+
 @app.route('/asuntos')
 def ver_asuntos():
     db = Database()

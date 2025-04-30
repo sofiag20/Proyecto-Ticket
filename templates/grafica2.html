@@ -17,7 +17,6 @@
         <option value="1">Arteaga</option>
         <option value="2">Saltillo</option>
         <option value="3">Piedras Negras</option>
-        <!-- Agrega más municipios según tu base -->
     </select>
 
     <div class="chart-container">
@@ -27,16 +26,31 @@
     <script>
         let chart;
     
+        function cargarMunicipios() {
+            fetch('/api/municipios')
+                .then(response => response.json())
+                .then(data => {
+                    const select = document.getElementById("municipio");
+    
+                    // Asegura que "Todos" esté como primera opción
+                    select.innerHTML = '<option value="todos">Todos</option>';
+    
+                    data.forEach(mun => {
+                        const option = document.createElement("option");
+                        option.value = mun.id;
+                        option.textContent = mun.nombre;
+                        select.appendChild(option);
+                    });
+                })
+                .catch(error => console.error("Error al cargar municipios:", error));
+        }
+    
         function cargarGrafica(municipio = 'todos') {
             fetch(`/api/dashboard?municipio=${municipio}`)
                 .then(response => response.json())
                 .then(data => {
-                    const estatusMap = {
-                        "Pendiente": 0,
-                        "Resuelto": 0
-                    };
+                    const estatusMap = { "Pendiente": 0, "Resuelto": 0 };
     
-                    // Llenar valores según los datos que llegan
                     data.forEach(item => {
                         if (item.estatus in estatusMap) {
                             estatusMap[item.estatus] = item.total;
@@ -48,7 +62,7 @@
     
                     const ctx = document.getElementById("myChart").getContext("2d");
     
-                    if (chart) chart.destroy(); // Si ya hay una gráfica, destruirla
+                    if (chart) chart.destroy();
     
                     chart = new Chart(ctx, {
                         type: "bar",
@@ -78,9 +92,7 @@
                                 }
                             },
                             scales: {
-                                y: {
-                                    beginAtZero: true
-                                }
+                                y: { beginAtZero: true }
                             }
                         }
                     });
@@ -88,14 +100,15 @@
                 .catch(error => console.error("Error al cargar datos:", error));
         }
     
-        // Cargar gráfica al inicio
         document.addEventListener("DOMContentLoaded", function () {
+            cargarMunicipios();
             cargarGrafica();
             document.getElementById("municipio").addEventListener("change", function () {
                 cargarGrafica(this.value);
             });
         });
     </script>
+    
     
     <div class="buttons">
         <button type="button" class="btn-panel" onclick="window.location.href='/admin-panel'">🏠 Volver al Panel</button>
